@@ -10,7 +10,7 @@
 | mcp-01 | Platform | Tool interface | Add typed preflight, policy, plan, execute-plan, and bounded evidence tools with accurate annotations. | [x] |
 | mcp-01 | Docs | Skills | Update all focused skills, prompts, glossary, ADRs, and README for the MCP/script seam. | [x] |
 | mcp-01 | Quality | Validation | Run Go tests, MCP protocol smoke tests, shell syntax, and plugin validation. | [x] |
-| mcp-01 | Release | Distribution | Publish the standalone `opentofu-codex-plugin` repository and verify local Codex installation. | [ ] |
+| mcp-01 | Release | Distribution | Publish the standalone `opentofu-codex-plugin` repository and verify local Codex installation. | [x] |
 
 ## Goal
 Deliver enterprise-grade behavior for existing OpenTofu skills without changing the current feature surface.
