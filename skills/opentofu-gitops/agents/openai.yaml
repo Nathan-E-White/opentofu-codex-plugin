@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTofu GitOps"
+  short_description: "Build reviewable plan-first delivery flows"
+  default_prompt: "Use $opentofu-gitops to produce one review unit from policy evidence and an immutable, expiring OpenTofu plan."

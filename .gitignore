@@ -1,0 +1,8 @@
+/bin/
+/dist/
+/.tofu-artifacts/
+/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+

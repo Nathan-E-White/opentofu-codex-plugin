@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTofu State"
+  short_description: "Inspect and safely change OpenTofu state"
+  default_prompt: "Use $opentofu-state for explicit state inspection or surgery; MCP may preflight context but does not perform state mutation."

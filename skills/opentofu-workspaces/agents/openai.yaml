@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTofu Workspaces"
+  short_description: "Manage explicit workspace and backend scope"
+  default_prompt: "Use $opentofu-workspaces to verify explicit workspace and backend scope; keep workspace and migration mutations on guarded scripts."

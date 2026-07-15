@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTofu Core"
+  short_description: "Run guarded OpenTofu lifecycle commands"
+  default_prompt: "Use $opentofu-core and the bundled MCP tools to preflight, review an immutable plan, and apply only its exact confirmed saved plan."

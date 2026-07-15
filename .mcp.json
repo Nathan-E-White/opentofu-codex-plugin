@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "opentofu": {
+      "command": "./scripts/launch-opentofu-mcp.sh",
+      "cwd": ".",
+      "env_vars": [
+        "OPENTOFU_MCP_ROOTS",
+        "TOFU_BIN",
+        "OPENTOFU_RUNNER_TIMEOUT_SECONDS"
+      ]
+    }
+  }
+}

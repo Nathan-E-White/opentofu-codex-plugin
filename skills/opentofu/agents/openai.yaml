@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTofu"
+  short_description: "Route safe OpenTofu infrastructure workflows"
+  default_prompt: "Use $opentofu to route this request, preferring typed MCP tools for preflight, policy, immutable planning, evidence, and confirmed saved-plan apply."

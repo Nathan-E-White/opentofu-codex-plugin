@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTofu Policy"
+  short_description: "Run policy and compliance evidence gates"
+  default_prompt: "Use $opentofu-policy and opentofu_policy_check to run required gates and preserve their evidence."

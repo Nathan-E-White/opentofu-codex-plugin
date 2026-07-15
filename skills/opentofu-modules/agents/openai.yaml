@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenTofu Modules"
+  short_description: "Review module and provider supply chains"
+  default_prompt: "Use $opentofu-modules to review module sources, provider locks, and upgrade risk; keep upgrades and imports outside generic MCP arguments."
