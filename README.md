@@ -3,7 +3,8 @@
 This plugin provides guarded OpenTofu workflows for core execution, state,
 workspaces, policy, modules, and GitOps. Enterprise mode keeps mutation explicit
 and evidence-backed. A bundled Go STDIO MCP server adds typed preflight, policy,
-immutable plan, confirmed apply, and bounded evidence tools.
+immutable plan, confirmed apply, and bounded evidence tools, all projected into
+a self-contained interactive operations dashboard in Codex.
 
 ## MCP server
 
@@ -27,6 +28,20 @@ executables at MCP startup. The plugin exposes:
 | `opentofu_plan` | create plan artifacts plus a 15-minute immutable apply authorization |
 | `opentofu_execute_plan` | consume one exact-confirmed plan and apply its saved plan file |
 | `opentofu_get_evidence` | read up to 256 KiB from a stack evidence file |
+
+Every MCP tool advertises `ui://opentofu/operations-dashboard` as its output
+template. Codex can therefore render stack context, policy status, immutable
+plan metadata, apply results, and bounded evidence as an MCP Apps UI without
+loading external scripts or network resources.
+
+## Brand assets
+
+The plugin's composer icon, details-page logo, and marketplace screenshot use
+the official OpenTofu brand artifacts. Those files are licensed under MPL-2.0
+and remain subject to the Linux Foundation Trademark Usage Policy; see
+`assets/OPENTOFU-BRAND-LICENSE.txt`. OpenTofu is a trademark of the Linux
+Foundation. This community plugin is not affiliated with or endorsed by the
+OpenTofu project or the Linux Foundation.
 
 Set `OPENTOFU_MCP_ROOTS` to a platform path-list of allowed stack roots when
 path confinement is required. With no configured roots, the server accepts only

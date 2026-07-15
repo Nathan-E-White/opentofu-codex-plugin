@@ -1,7 +1,7 @@
 {
   "name": "opentofu",
-  "version": "0.2.0",
-  "description": "Guarded OpenTofu skills and a local MCP server for policy, immutable planning, evidence, and confirmed apply workflows.",
+  "version": "0.3.0",
+  "description": "Guarded OpenTofu skills, typed local MCP tools, and an interactive operations dashboard for Codex.",
   "author": {
     "name": "Nathan E White",
     "url": "https://github.com/Nathan-E-White"
@@ -18,7 +18,7 @@
   "interface": {
     "displayName": "OpenTofu",
     "shortDescription": "Run safe OpenTofu workflows from local validation to GitOps review.",
-    "longDescription": "A multi-skill OpenTofu pack with a local Go MCP server for preflight, policy evidence, immutable plans, bounded evidence reads, and single-use confirmed applies.",
+    "longDescription": "A multi-skill OpenTofu pack with a local Go MCP server and interactive dashboard for preflight, policy evidence, immutable plans, bounded evidence reads, and single-use confirmed applies.",
     "developerName": "Nathan E White",
     "category": "Productivity",
     "capabilities": [
@@ -30,6 +30,12 @@
       "Validate and plan an OpenTofu stack with safety checks.",
       "Run drift and policy checks before an environment change.",
       "Generate a reviewable OpenTofu plan artifact for CI."
+    ],
+    "brandColor": "#FFDA18",
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/logo.png",
+    "screenshots": [
+      "./assets/opentofu-widescreen.png"
     ]
   }
 }

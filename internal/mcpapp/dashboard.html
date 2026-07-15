@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root { color-scheme:light dark; --bg:#f7f9f7; --panel:#fff; --line:#dce4dd; --text:#17201a; --muted:#647069; --ok:#16794a; --warn:#956400; --bad:#b42318; --accent:#2d7d46; --code:#eff4f0; }
+    @media (prefers-color-scheme:dark) { :root { --bg:#0d1210; --panel:#151c18; --line:#2c3931; --text:#edf4ef; --muted:#9aaba0; --ok:#58d68d; --warn:#f0bd55; --bad:#ff7b72; --accent:#63d38b; --code:#0a0f0c; } }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:18px; background:var(--bg); color:var(--text); font:13px/1.45 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    header { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:14px; }
+    h1 { margin:0; font-size:18px; letter-spacing:.01em; }
+    .subtitle { margin-top:2px; color:var(--muted); }
+    .toolbar { display:flex; align-items:center; gap:8px; }
+    .badge { border:1px solid var(--line); border-radius:999px; padding:4px 9px; color:var(--muted); white-space:nowrap; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:10px; }
+    .card { min-height:94px; padding:13px; border:1px solid var(--line); border-radius:12px; background:var(--panel); }
+    .wide { grid-column:1/-1; }
+    .label { margin-bottom:7px; color:var(--muted); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .value { font-size:14px; font-weight:650; overflow-wrap:anywhere; }
+    .ok,.success,.planned,.applied { color:var(--ok); } .changes_detected { color:var(--warn); } .failed,.error { color:var(--bad); }
+    pre { max-height:320px; overflow:auto; margin:0; padding:12px; border-radius:9px; background:var(--code); color:var(--text); white-space:pre-wrap; word-break:break-word; font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    button { border:1px solid var(--line); border-radius:8px; padding:7px 10px; color:var(--text); background:var(--panel); cursor:pointer; }
+    button:hover:not(:disabled) { border-color:var(--accent); }
+    button:disabled { cursor:not-allowed; opacity:.45; }
+    .empty { color:var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <div><h1>OpenTofu Operations</h1><div class="subtitle">Explicit context · policy evidence · immutable plans</div></div>
+    <div class="toolbar"><button id="preflight" disabled>Re-run preflight</button><span id="status" class="badge">Waiting for tool output</span></div>
+  </header>
+  <main id="content" class="grid"><section class="card wide empty">Run an OpenTofu MCP tool to populate this dashboard.</section></main>
+  <script>
+    const content = document.getElementById('content');
+    const status = document.getElementById('status');
+    const preflight = document.getElementById('preflight');
+    let current = null;
+    const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const labels = {
+      stack_path:'Stack', profile:'Profile', workspace:'Workspace', status:'Status', run_id:'Run ID', plan_id:'Plan ID',
+      expires_at:'Plan expires', exit_code:'Exit code', artifact_dir:'Artifacts', evidence_dir:'Evidence', path:'Evidence file',
+      bytes_read:'Bytes read', truncated:'Truncated', root_policy:'Root policy'
+    };
+    const visible = ['status','stack_path','profile','workspace','run_id','plan_id','expires_at','exit_code','artifact_dir','evidence_dir','path','bytes_read','truncated','root_policy'];
+    function render(data) {
+      if (!data || typeof data !== 'object') return;
+      current = data;
+      const state = data.status || (data.path ? 'evidence' : 'ready');
+      status.textContent = String(state).replaceAll('_',' ');
+      status.className = `badge ${state}`;
+      const cards = visible.filter(key => data[key] !== undefined && data[key] !== '').map(key =>
+        `<section class="card"><div class="label">${esc(labels[key] || key)}</div><div class="value ${key === 'status' ? esc(state) : ''}">${esc(data[key])}</div></section>`
+      );
+      const detail = data.output || data.content || '';
+      if (detail) cards.push(`<section class="card wide"><div class="label">${data.content ? 'Evidence content' : 'Command output'}</div><pre>${esc(detail)}</pre></section>`);
+      content.innerHTML = cards.join('') || '<section class="card wide empty">The tool returned no displayable fields.</section>';
+      preflight.disabled = !(data.stack_path && data.profile && window.openai?.callTool);
+    }
+    function output() { return window.openai?.toolOutput || window.openai?.structuredContent || null; }
+    render(output());
+    window.addEventListener('openai:set_globals', event => render(event.detail?.globals?.toolOutput || event.detail?.globals?.structuredContent));
+    preflight.addEventListener('click', async () => {
+      if (!current?.stack_path || !current?.profile || !window.openai?.callTool) return;
+      status.textContent = 'running preflight';
+      const args = {stack_path:current.stack_path, profile:current.profile};
+      if (current.workspace) args.workspace = current.workspace;
+      const result = await window.openai.callTool('opentofu_preflight', args);
+      render(result?.structuredContent || result);
+    });
+  </script>
+</body>
+</html>
